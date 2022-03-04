@@ -1,0 +1,59 @@
+#define _CRT_SECURE_NO_WARNINGS
+/* To Be or Not To Be !!
+Allah_Almost3aan
+Make it happens :) */
+#include<bits/stdc++.h>
+#include<unordered_map>
+//#include<unorderd_set>
+using namespace std;
+using ll =  long long;
+const ll OO = 1e18;
+#define ed '\n'
+#define F first
+#define S second
+#define sz(a)a.size()
+#define vi vector<int>
+#define pii pair<int,int>
+#define all(c)c.begin(),c.end()
+#define RT(v)return cout<<v<<ed,0
+#define rall(s)s.rbegin(),s.rend()
+#define stpr(n)fixed<<setprecision(n)
+int di[8] = { 0, 0, 1, -1, -1, 1, -1, 1 };
+int dj[8] = { 1, -1, 0, 0, 1, 1, -1, -1 };
+#define show(x)cout<<"> "<<(#x)<<" = "<<x<<ed
+#define reset(mem,val)memset(mem,val,sizeof mem)
+#define fast ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+string ys = "YES", no = "NO"; const int N = 1 << 20, M = 1<<10;
+const ll mod = 1e9 + 7;
+
+ll dp[500][500][2];
+int n, m, k1, k2;
+ll ans;
+ll solve( int rem1, int rem2,bool stat){
+
+	if (!rem1&&!rem2)return 1;
+	if (rem1<0||rem2<0)return 0;
+	ll ret = dp[rem1][rem2][stat];
+	if (~ret)return ret;
+	 ret = 0;
+	 if (!stat){
+		 for (int i = 1; i <= k1; i++)
+		 if (rem1>=i)
+			ret += dp[rem1 - i][ rem2][1]=solve(rem1 - i, rem2, 1);
+		 ret %= ll(1e8);
+	 }
+	 else {
+		 for (int i = 1; i <= k2; i++)
+		 if (rem2>=i)
+			 ret += dp[rem1][rem2-i][0]=solve(rem1, rem2 - i, 0);
+		 ret %= ll(1e8);
+	 }
+	return ret%ll(1e8);
+}
+
+int main() {           
+	fast;
+	cin >> n >> m >> k1 >> k2;;
+	reset(dp, -1);
+	cout << (solve(n, m, 0) + solve(n, m, 1)) % ll(1e8) << ed;
+}
